@@ -2,76 +2,69 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, Pressable } from 'react-native';
 import { COLORS, SPACE, RADIUS, TYPO } from '../styles/tokens';
 
-// Fungsi untuk menentukan warna berdasarkan jenis mood
-const getMoodColor = (mood) => {
-  switch (mood?.toLowerCase()) {
-    case 'happy': return '#f59e0b'; // Kuning
-    case 'sad': return '#64748b'; // Abu-abu
-    case 'focus': return '#3b82f6'; // Biru
-    case 'calm': return '#10b981'; // Hijau
-    case 'excited': return '#ef4444'; // Merah
-    default: return COLORS.muted;
-  }
-};
-
 export default function DiaryCard({
-  title, date, preview, moodUri, moodType, onPress, variant = 'list'
+  title,
+  date,
+  preview,
+  moodImage, // Sebelumnya Anda menggunakan moodUri, pastikan data yang dikirim sesuai namanya
+  liked = false,
+  onPress = () => {},
+  onToggleLike = () => {},
 }) {
-  const moodColor = getMoodColor(moodType);
-
   return (
     <Pressable
       onPress={onPress}
       style={({ pressed }) => [
-        styles.card,
-        variant === 'grid' && styles.cardGrid,
+        styles.card, 
         { opacity: pressed ? 0.85 : 1 }
       ]}
       accessible
       accessibilityLabel={`Entri ${title} tanggal ${date}`}
     >
-      <Image source={{ uri: moodUri }} style={styles.mood} />
-      
+      {/* Gambar Mood */}
+      <Image 
+        source={moodImage} 
+        style={styles.mood} 
+      />
+      {/* Konten Teks */}
       <View style={styles.content}>
         <Text style={styles.title} numberOfLines={1}>{title}</Text>
         <Text style={styles.date}>{date}</Text>
-        
-        {/* Badge Mood Dinamis */}
-        {moodType && (
-          <View style={[styles.badge, { borderColor: moodColor }]}>
-            <Text style={[styles.badgeText, { color: moodColor }]}>
-              {moodType.toUpperCase()}
-            </Text>
-          </View>
-        )}
-
         <Text style={styles.preview} numberOfLines={2} ellipsizeMode="tail">
           {preview}
         </Text>
       </View>
+      
+      {/* Tombol Like */}
+      <Pressable onPress={onToggleLike}>
+        {/* Saya menambahkan emoji hati di sini, Anda bisa menggantinya dengan ikon lain jika mau */}
+        <Text style={styles.like}>{liked ? '❤️' : '🤍'}</Text>
+      </Pressable>
+      
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    flexDirection: 'row', gap: SPACE.m, padding: SPACE.m,
-    borderWidth: 1, borderColor: COLORS.border,
-    borderRadius: RADIUS.card, backgroundColor: COLORS.surface,
+    flexDirection: 'row',
+    gap: SPACE.m,
+    padding: SPACE.m,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    borderRadius: RADIUS.card,
+    backgroundColor: COLORS.surface,
+    alignItems: 'center',
   },
-  cardGrid: { flexDirection: 'column', alignItems: 'center', textAlign: 'center' },
-  mood: { width: 64, height: 64, borderRadius: RADIUS.avatar, backgroundColor: '#eef2ff' },
+  mood: {
+    width: 64,
+    height: 64,
+    borderRadius: RADIUS.avatar,
+    backgroundColor: '#eef2ff',
+  },
   content: { flex: 1 },
   title: { fontSize: TYPO.title, fontWeight: '700', color: COLORS.text },
-  date: { fontSize: TYPO.caption, color: COLORS.muted, marginBottom: 4 },
-  preview: { fontSize: TYPO.body, color: COLORS.text, marginTop: SPACE.s },
-  badge: {
-    alignSelf: 'flex-start',
-    borderWidth: 1,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 12,
-    marginBottom: 4,
-  },
-  badgeText: { fontSize: 10, fontWeight: '700' }
+  date: { fontSize: TYPO.caption, color: COLORS.muted, marginBottom: 6 },
+  preview: { fontSize: TYPO.body, color: COLORS.text },
+  like: { fontSize: 22, paddingHorizontal: 6 },
 });
