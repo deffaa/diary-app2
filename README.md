@@ -3,13 +3,12 @@ NIM: 2430511035
 Kelas: 5C Teknik Informatika
 
 Fitur yang Diselesaikan
--Design Tokens: Menerapkan standarisasi warna, ukuran, dan tipografi (`tokens.js`).
--FlatList Responsif: Tampilan daftar otomatis menyesuaikan ukuran layar.
--Detail Modal: Menampilkan pop-up detail catatan saat kartu ditekan.
--Penambahan Data: Menambahkan 2 entri baru (total 5 entri) untuk menguji mode grid.
-
-Cara Kerja Breakpoint 600px
-Aplikasi mendeteksi lebar layar menggunakan `useWindowDimensions()`. Jika lebar layar di bawah 600px (HP), data ditampilkan dalam 1 kolom. Jika lebar layar 600px atau lebih (Tablet/Landscape), data otomatis ditampilkan dalam 2 kolom (`numColumns={2}`).
+Pada tugas ini, aplikasi telah dipecah menjadi beberapa komponen terstruktur:
+* **Manajemen State Terpusat:** State utama (`entries`, `query`, `likedIds`) dikelola di komponen induk (`DiaryListScreen`).
+* **Presentational Component:** Komponen `DiaryCard` menerima data dan interaksi (tombol Like & tekan) melalui *props*.
+* **Fitur Pencarian:** `SearchBar` menggunakan *local state* untuk menyaring daftar catatan yang tampil secara *real-time*.
+* **Controlled Form:** `EntryForm` menangkap input pengguna untuk menambahkan entri catatan baru ke daftar secara instan tanpa perlu memuat ulang (*reload*) aplikasi.
+* **Aset Lokal:** Menggunakan file gambar lokal yang tersimpan di dalam folder `assets/moods/`.
 
 Cara Menjalankan Aplikasi
 1. Buka terminal di dalam folder `diary-app`.
